@@ -9,7 +9,7 @@ import {Row, Col, List, Icon} from 'antd'
 import '../static/style/pages/index.css'
 
 const Home = (list) => {
-    const [ mylist , setMylist ] = useState( list.data)
+    const [mylist, setMylist] = useState(list.data)
     return (
         <>
         <Head>
@@ -26,11 +26,11 @@ const Home = (list) => {
                         <List.Item>
                             <div className="list-title">{item.title}</div>
                             <div className="list-icon">
-                                <span><Icon type="calendar"/> 2019-06-28</span>
+                                <span><Icon type="calendar"/> {item.addTime}</span>
                                 <span><Icon type="folder"/> 视频教程</span>
-                                <span><Icon type="fire"/> 5498人</span>
+                                <span><Icon type="fire"/> {item.view_count}人</span>
                             </div>
-                            <div className="list-context">{item.context}</div>
+                            <div className="list-context">{item.introduce}</div>
                         </List.Item>
                     )}
                 />
@@ -46,12 +46,16 @@ const Home = (list) => {
     )
 }
 
-Home.getInitialProps = async() => {
+Home.getInitialProps = async () => {
     const promise = new Promise((resolve) => {
-        axios('http://127.0.0.1:7001/default/getArticleList').then((res)=>{
-            //console.log('远程获取数据结果:',res.data.data)
-            resolve(res.data)
-        })
+        axios('http://127.0.0.1:7001/default/getArticleList')
+            .then((res) => {
+                console.log('远程获取数据结果:', res.data.data)
+                resolve(res.data)
+            })
+            .catch(msg => {
+                console.log(msg)
+            })
     })
     return await promise
 }
